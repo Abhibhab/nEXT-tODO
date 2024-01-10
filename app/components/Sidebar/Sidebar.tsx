@@ -31,6 +31,9 @@ const Sidebar = () => {
             alt={"Profile-image"}
           />
         </div>
+        <div className="user-btn">
+          <UserButton/>
+        </div>
 
         <h1>
           <span>Abhibhab</span>

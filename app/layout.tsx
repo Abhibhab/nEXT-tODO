@@ -5,11 +5,13 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import GlobalStyleProvider from "./providers/GlobalStyleProvider";
 import ContextProvider from "./providers/ContextProvider";
 // import { auth } from "@clerk/nextjs";
+import CreateContent from "./components/Modals/CreateContent";
 const nunito = Nunito({
   weight: ["400", "500", "600", "700", "800"],
   subsets: ["latin"],
 });
 import { ClerkProvider, auth } from "@clerk/nextjs";
+import NextTopLoader from "nextjs-toploader";
 // const {Nunito} form "next/font/google";
 
 export const metadata: Metadata = {
@@ -35,7 +37,12 @@ export default function RootLayout({
           />
         </head>
         <body className={nunito.className}>
+          <NextTopLoader
+          height={2}
+          color="#27AE60"
+          easing="cubic-bezier(.53,.21,0,1)"/>
           <ContextProvider>
+            {/* <CreateContent/> */}
             <GlobalStyleProvider>
               {userId && <Sidebar />}
               <div className="w-full">{children}</div>
