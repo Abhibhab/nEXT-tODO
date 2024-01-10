@@ -3,3 +3,6 @@ its easy brov
 prisma and mongo db
  prisma init --datasource-provider mongodb
  > npm i -g prisma   
+ clerk for the auth 
+ next clerk
+ 
