@@ -11,15 +11,14 @@ export async function DELETE(
     const { id } = params;
     if (!userId) {
       return NextResponse.json({ error: "unauthorised", status: 401 });
-
     }
     const task = await prisma.task.delete({
       where: {
         id,
       },
     });
-    console.log("Task Deleted",task);
-    return NextResponse.json({task});
+    console.log("Task Deleted", task);
+    return NextResponse.json({ task });
   } catch (error) {
     console.log("Error deleteing task:", error);
     return NextResponse.json({ error: "Error deleting tsk", status: 500 });

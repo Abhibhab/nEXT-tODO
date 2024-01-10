@@ -1,43 +1,50 @@
 "use client";
-import { useGlobalState } from "@/app/context/GlobalProvider";
 import React from "react";
 import styled from "styled-components";
+import { useGlobalState } from "@/app/context/GlobalProvider";
 import Image from "next/image";
+
 import menu from "@/app/utils/menu";
 import Link from "next/link";
-import { logout } from "@/app/utils/Icons";
+import { usePathname, useRouter } from "next/navigation";
 import Button from "../Button/Button";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
+import { arrowLeft, bars, logout } from "@/app/utils/Icons";
 import { UserButton, useClerk, useUser } from "@clerk/nextjs";
-const Sidebar = () => {
+
+function Sidebar() {
+  const { theme, collapsed, collapseMenu } = useGlobalState();
   const { signOut } = useClerk();
+
+  const { user } = useUser();
+
+  const { firstName, lastName, imageUrl } = user || {
+    firstName: "",
+    lastName: "",
+    imageUrl: "",
+  };
+
   const router = useRouter();
-  const { theme } = useGlobalState();
-  // console.log(theme);
+  const pathname = usePathname();
+
   const handleClick = (link: string) => {
     router.push(link);
   };
-  const pathname = usePathname();
+
   return (
-    <SidebarStyled theme={theme}>
+    <SidebarStyled theme={theme} collapsed={collapsed}>
+      <button className="toggle-nav" onClick={collapseMenu}>
+        {collapsed ? bars : arrowLeft}
+      </button>
       <div className="profile">
         <div className="profile-overlay"></div>
         <div className="image">
-          <Image
-            width={70}
-            height={70}
-            src={"/images/profile.jpg"}
-            alt={"Profile-image"}
-          />
+          <Image width={70} height={70} src={imageUrl} alt="profile" />
         </div>
-        <div className="user-btn">
-          <UserButton/>
+        <div className="user-btn absolute z-20 top-0 w-full h-full">
+          <UserButton />
         </div>
-
-        <h1>
-          <span>Abhibhab</span>
-          <span>Mitra</span>
+        <h1 className="capitalize">
+          {firstName} {lastName}
         </h1>
       </div>
       <ul className="nav-items">
@@ -45,6 +52,7 @@ const Sidebar = () => {
           const link = item.link;
           return (
             <li
+              key={item.id}
               className={`nav-item ${pathname === link ? "active" : ""}`}
               onClick={() => {
                 handleClick(link);
@@ -72,9 +80,9 @@ const Sidebar = () => {
       </div>
     </SidebarStyled>
   );
-};
+}
 
-const SidebarStyled = styled.nav`
+const SidebarStyled = styled.nav<{ collapsed: boolean }>`
   position: relative;
   width: ${(props) => props.theme.sidebarWidth};
   background-color: ${(props) => props.theme.colorBg2};

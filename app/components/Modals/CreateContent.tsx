@@ -52,15 +52,15 @@ function CreateContent() {
 
     try {
       const res = await axios.post("/api/tasks", task);
-
+      // console.log(res.data);
       if (res.data.error) {
         toast.error(res.data.error);
       }
 
       if (!res.data.error) {
         toast.success("Task created successfully.");
-        // allTasks();
-        // closeModal();
+        allTasks();
+        closeModal();
       }
     } catch (error) {
       toast.error("Something went wrong.");
